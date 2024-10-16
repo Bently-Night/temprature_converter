@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script> 
+</head>
+<body>
+    <form>
+        <h1>Temperature Converter</h1>
+        <input type="number" id="textbox" value="0" min="0" step="1" placeholder="temp_converter" style="font-size: smaller;"><br>
+
+        <input type="radio" id="toFaren" name="unit">
+        <label for="toFaren">Celsius ➡ Fahrenheit</label><br>
+
+        <input type="radio" id="toCelcius" name="unit">
+        <label for="toCelcius">Fahrenheit ➡ Celsius</label>
+
+        <button type="button" onclick="convert()">Convert</button>
+        <p id="result"></p>
+    </form>
+
+    <script>
+        function convert() {
+            const inputValue = textbox.value.trim();
+
+            if (inputValue === '') {
+                result.textContent = "Please enter a temperature.";
+                return;
+            }
+
+            // Parse the input value as a float (to catch decimals as well)
+            const temp = parseFloat(inputValue);
+
+            // Check if it's a number and if it's an integer
+            if (isNaN(temp)) {
+                result.textContent = "Please enter a valid number.";
+                return;
+            } else if (!Number.isInteger(temp)) {
+                result.textContent = "Please enter an integer value, not a float.";
+                return;
+            }
+
+            if (toFaren.checked) {
+                const fahrenheit = Math.round((temp * 9 / 5) + 32);
+                result.textContent = `The temperature in Fahrenheit: ${fahrenheit}℉`;
+            } else if (toCelcius.checked) {
+                const celsius = Math.round((temp - 32) * 5 / 9);
+                result.textContent = `The temperature in Celsius: ${celsius}℃`;
+            } else {
+                result.textContent = "Please select a conversion unit.";
+            }
+        }
+
+        textbox.type = "number";
+        textbox.step = "1";
+
+        textbox.addEventListener('input', convert);
+        toFaren.addEventListener('change', convert);
+        toCelcius.addEventListener('change', convert);
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #286ba5;
+        }
+        h1 {
+            color: black;
+        }
+        form {
+            background-color: #96aec2;
+            text-align: center;
+            max-width: 350px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px gray;
+        }
+        #textbox {
+            width: 50%;
+            text-align: center;
+            font-size: 2em;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        #textbox:active, #textbox:hover {
+            border: 1px solid blue;
+        }
+        label {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 15px;
+            background-color: hsl(0, 100%, 60%);
+            font-size: 1.5em;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: 1s;
+        }
+        button:hover {
+            background-color: hsl(0, 100%, 50%);
+        }
+        #result {
+            font-size: 1.75em;
+            font-weight: bold;
+        }
+    </style>
+</body>
+</html>
